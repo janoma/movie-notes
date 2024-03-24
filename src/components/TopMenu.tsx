@@ -12,6 +12,7 @@ import { alpha, styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { FC, useState } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
 
 const Search = styled("div")(({ theme }) => ({
   "&:hover": {
@@ -60,6 +61,10 @@ const TopMenu: FC = () => {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  useHotkeys("mod+k", () => {
+    document.getElementById("search")?.focus();
+  });
 
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -132,6 +137,9 @@ const TopMenu: FC = () => {
     </Menu>
   );
 
+  // Might need revisiting in the future due to deprecated value
+  const mod = window.navigator.platform.includes("Mac") ? "⌘" : "Ctrl";
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -151,15 +159,16 @@ const TopMenu: FC = () => {
             sx={{ display: { sm: "block", xs: "none" } }}
             variant="h6"
           >
-            MUI
+            Movie Notes
           </Typography>
           <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
+              id="search"
               inputProps={{ "aria-label": "search" }}
-              placeholder="Search…"
+              placeholder={`Search… (${mod}+K)`}
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
