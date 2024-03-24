@@ -8,55 +8,55 @@ import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import { alpha, styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { alpha, styled } from "@mui/material/styles";
 import { FC, useState } from "react";
 
 const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
   "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
-  marginRight: theme.spacing(2),
+  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  borderRadius: theme.shape.borderRadius,
   marginLeft: 0,
-  width: "100%",
+  marginRight: theme.spacing(2),
+  position: "relative",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
     width: "auto",
   },
+  width: "100%",
 }));
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
   alignItems: "center",
+  display: "flex",
+  height: "100%",
   justifyContent: "center",
+  padding: theme.spacing(0, 2),
+  pointerEvents: "none",
+  position: "absolute",
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "inherit",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
     [theme.breakpoints.up("md")]: {
       width: "20ch",
     },
+    transition: theme.transitions.create("width"),
+    width: "100%",
   },
+  color: "inherit",
 }));
 
 const TopMenu: FC = () => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    useState<null | HTMLElement>(null);
+    useState<HTMLElement | null>(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -83,17 +83,17 @@ const TopMenu: FC = () => {
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{
-        vertical: "top",
         horizontal: "right",
+        vertical: "top",
       }}
       id={menuId}
       keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMenuOpen}
       onClose={handleMenuClose}
+      open={isMenuOpen}
+      transformOrigin={{
+        horizontal: "right",
+        vertical: "top",
+      }}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
@@ -105,25 +105,25 @@ const TopMenu: FC = () => {
     <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{
-        vertical: "top",
         horizontal: "right",
+        vertical: "top",
       }}
       id={mobileMenuId}
       keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
+      open={isMobileMenuOpen}
+      transformOrigin={{
+        horizontal: "right",
+        vertical: "top",
+      }}
     >
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
-          size="large"
-          aria-label="account of current user"
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
+          aria-label="account of current user"
           color="inherit"
+          size="large"
         >
           <AccountCircle />
         </IconButton>
@@ -137,19 +137,19 @@ const TopMenu: FC = () => {
       <AppBar position="static">
         <Toolbar>
           <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
             aria-label="open drawer"
+            color="inherit"
+            edge="start"
+            size="large"
             sx={{ mr: 2 }}
           >
             <MenuIcon />
           </IconButton>
           <Typography
-            variant="h6"
-            noWrap
             component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
+            noWrap
+            sx={{ display: { sm: "block", xs: "none" } }}
+            variant="h6"
           >
             MUI
           </Typography>
@@ -158,32 +158,32 @@ const TopMenu: FC = () => {
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
-              placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
+              placeholder="Search…"
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ display: { md: "flex", xs: "none" } }}>
             <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
+              aria-label="account of current user"
               color="inherit"
+              edge="end"
+              onClick={handleProfileMenuOpen}
+              size="large"
             >
               <AccountCircle />
             </IconButton>
           </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
+          <Box sx={{ display: { md: "none", xs: "flex" } }}>
             <IconButton
-              size="large"
-              aria-label="show more"
               aria-controls={mobileMenuId}
               aria-haspopup="true"
-              onClick={handleMobileMenuOpen}
+              aria-label="show more"
               color="inherit"
+              onClick={handleMobileMenuOpen}
+              size="large"
             >
               <MoreIcon />
             </IconButton>

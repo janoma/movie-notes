@@ -1,13 +1,13 @@
 import {
+  createTheme,
   CssBaseline,
   StyledEngineProvider,
   ThemeProvider,
-  createTheme,
 } from "@mui/material";
-import { FC } from "react";
-
 import { ThemeOptions } from "@mui/material/styles";
+import { FC } from "react";
 import { Outlet } from "react-router-dom";
+
 import TopMenu from "../components/TopMenu";
 
 const themeOptions: ThemeOptions = {
