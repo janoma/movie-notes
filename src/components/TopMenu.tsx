@@ -141,7 +141,7 @@ const TopMenu: FC = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" role="toolbar">
         <Toolbar>
           <Typography
             component="div"
