@@ -1,8 +1,9 @@
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import MoreIcon from "@mui/icons-material/MoreVert";
 import SearchIcon from "@mui/icons-material/Search";
+import { Avatar } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
+import { deepOrange } from "@mui/material/colors";
 import IconButton from "@mui/material/IconButton";
 import InputBase from "@mui/material/InputBase";
 import Menu from "@mui/material/Menu";
@@ -10,8 +11,12 @@ import MenuItem from "@mui/material/MenuItem";
 import { alpha, styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import { getAuth, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
 import { FC, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
+
+import { useAppSelector } from "../app/hooks";
+import sessionSlice from "../features/session";
 
 const Search = styled("div")(({ theme }) => ({
   "&:hover": {
@@ -55,11 +60,12 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const TopMenu: FC = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    useState<HTMLElement | null>(null);
 
   const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const photoUrl = useAppSelector(sessionSlice.selectors.photoUrl);
+  const userId = useAppSelector(sessionSlice.selectors.userId);
+  const userName = useAppSelector(sessionSlice.selectors.userName);
 
   useHotkeys("mod+k", () => {
     document.getElementById("search")?.focus();
@@ -69,17 +75,8 @@ const TopMenu: FC = () => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
   const handleMenuClose = () => {
     setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setMobileMoreAnchorEl(event.currentTarget);
   };
 
   const menuId = "primary-search-account-menu";
@@ -88,7 +85,7 @@ const TopMenu: FC = () => {
       anchorEl={anchorEl}
       anchorOrigin={{
         horizontal: "right",
-        vertical: "top",
+        vertical: "bottom",
       }}
       id={menuId}
       keepMounted
@@ -99,40 +96,24 @@ const TopMenu: FC = () => {
         vertical: "top",
       }}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
-
-  const mobileMenuId = "primary-search-account-menu-mobile";
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{
-        horizontal: "right",
-        vertical: "top",
-      }}
-      id={mobileMenuId}
-      keepMounted
-      onClose={handleMobileMenuClose}
-      open={isMobileMenuOpen}
-      transformOrigin={{
-        horizontal: "right",
-        vertical: "top",
-      }}
-    >
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          aria-label="account of current user"
-          color="inherit"
-          size="large"
+      {userId ? (
+        [
+          <MenuItem key="profile" onClick={handleMenuClose}>
+            Profile
+          </MenuItem>,
+          <MenuItem key="account" onClick={handleMenuClose}>
+            My account
+          </MenuItem>,
+        ]
+      ) : (
+        <MenuItem
+          onClick={() =>
+            signInWithRedirect(getAuth(), new GoogleAuthProvider())
+          }
         >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+          Sign in
+        </MenuItem>
+      )}
     </Menu>
   );
 
@@ -172,24 +153,19 @@ const TopMenu: FC = () => {
               onClick={handleProfileMenuOpen}
               size="large"
             >
-              <AccountCircle />
-            </IconButton>
-          </Box>
-          <Box sx={{ display: { md: "none", xs: "flex" } }}>
-            <IconButton
-              aria-controls={mobileMenuId}
-              aria-haspopup="true"
-              aria-label="show more"
-              color="inherit"
-              onClick={handleMobileMenuOpen}
-              size="large"
-            >
-              <MoreIcon />
+              {photoUrl ? (
+                <Avatar
+                  alt={userName ?? ""}
+                  src={photoUrl}
+                  sx={{ bgcolor: deepOrange[300] }}
+                />
+              ) : (
+                <AccountCircle />
+              )}
             </IconButton>
           </Box>
         </Toolbar>
       </AppBar>
-      {renderMobileMenu}
       {renderMenu}
     </Box>
   );
