@@ -11,7 +11,12 @@ import MenuItem from "@mui/material/MenuItem";
 import { alpha, styled } from "@mui/material/styles";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { getAuth, GoogleAuthProvider, signInWithRedirect } from "firebase/auth";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithRedirect,
+  signOut,
+} from "firebase/auth";
 import { FC, useState } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 
@@ -104,6 +109,9 @@ const TopMenu: FC = () => {
           <MenuItem key="account" onClick={handleMenuClose}>
             My account
           </MenuItem>,
+          <MenuItem key="sign-out" onClick={() => signOut(getAuth())}>
+            Sign out
+          </MenuItem>,
         ]
       ) : (
         <MenuItem
@@ -122,7 +130,7 @@ const TopMenu: FC = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" role="toolbar">
+      <AppBar elevation={0} position="static" role="toolbar">
         <Toolbar>
           <Typography
             component="div"

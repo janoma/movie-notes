@@ -1,12 +1,13 @@
-import { Container, Typography } from "@mui/material";
 import { FC } from "react";
 
+import { useAppSelector } from "./app/hooks";
+import Landing from "./components/Landing";
+import sessionSlice from "./features/session";
+
 const App: FC = () => {
-  return (
-    <Container maxWidth="sm">
-      <Typography>Well hello there</Typography>
-    </Container>
-  );
+  const userId = useAppSelector(sessionSlice.selectors.userId);
+
+  return userId ? <>Hello</> : <Landing />;
 };
 
 export default App;
