@@ -1,13 +1,14 @@
 import {
+  CssBaseline,
   StyledEngineProvider,
   ThemeProvider,
-  CssBaseline,
   createTheme,
 } from "@mui/material";
 import { FC } from "react";
-import App from "../App";
 
 import { ThemeOptions } from "@mui/material/styles";
+import { Outlet } from "react-router-dom";
+import TopMenu from "../components/TopMenu";
 
 const themeOptions: ThemeOptions = {
   palette: {
@@ -26,7 +27,8 @@ const Root: FC = () => {
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={createTheme(themeOptions)}>
         <CssBaseline />
-        <App />
+        <TopMenu />
+        <Outlet />
       </ThemeProvider>
     </StyledEngineProvider>
   );
